@@ -3,6 +3,10 @@
 This is telegram and vk bots. They answer for users on usual questions. Also
 you can learning your chat bot to answer for usual question.
 
+Example work:
+
+![](demo_vk_bot.gif)
+
 ## Project setup
 
 It is necessary to register ENVIRONMENT variables.
