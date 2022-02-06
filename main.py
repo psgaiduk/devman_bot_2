@@ -31,8 +31,11 @@ def main():
             logger.debug('Ищем ответ через DialogFlow')
             text = detect_intent_texts('careful-gasket-340217', message.chat.id, message.text, 'ru-RU')
         if text:
-            bot.send_message(message.chat.id, text)
-            logger.debug(f'Отправляю сообщение {text}')
+            try:
+                bot.send_message(message.chat.id, text)
+                logger.debug(f'Отправляю сообщение {text}')
+            except Exception as e:
+                logger.exception(f'Произошла ошибка.\n{e}')
         else:
             logger.debug('DialogFlow не нашёл ответа, ничего не делаем')
 

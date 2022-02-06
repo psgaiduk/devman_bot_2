@@ -1,12 +1,13 @@
 from vk_api.longpoll import VkLongPoll, VkEventType
 import vk_api as vk
+from vk_api.exceptions import Captcha
 import random
 from dotenv import load_dotenv
 import os
 from work_dialog_flow import detect_intent_texts
 import logging
 from logging import config
-
+import time
 from logger_settings import logger_config
 
 logger = logging.getLogger('app_logger')
@@ -41,9 +42,16 @@ def main():
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            logger.debug(f'Это новое сообщение {event.type} {event.to_me}')
-            echo(event, vk_api)
+        try:
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                logger.debug(f'Это новое сообщение {event.type} {event.to_me}')
+                echo(event, vk_api)
+        except Captcha:
+            time.sleep(1)
+            logger.warning('Ошибка. Слишком частые запросы.')
+        except Exception as e:
+            time.sleep(1)
+            logger.exception(f'Произошла ошибка.\n{e}')
 
 
 if __name__ == "__main__":
