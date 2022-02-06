@@ -5,6 +5,7 @@ from work_dialog_flow import detect_intent_texts
 from logger_settings import logger_config
 import logging
 from logging import config
+from constants import TOKEN_TELEGRAM, PROJECT_ID
 
 logger = logging.getLogger('app_logger')
 
@@ -16,11 +17,9 @@ def main():
 
     logging.config.dictConfig(logger_config)
 
-    token_telegram = os.environ['TELEGRAM_TOKEN']
-
     logger.info('Начало работы телеграмм бота Lerning Pashka 2')
 
-    bot = telebot.TeleBot(token=token_telegram)
+    bot = telebot.TeleBot(token=TOKEN_TELEGRAM)
 
     @bot.message_handler(content_types=["text"])
     def repeat_all_messages(message):
@@ -29,7 +28,7 @@ def main():
             text = 'Здравствуйте'
         else:
             logger.debug('Ищем ответ через DialogFlow')
-            text = detect_intent_texts('careful-gasket-340217', message.chat.id, message.text, 'ru-RU')
+            text = detect_intent_texts(PROJECT_ID, message.chat.id, message.text, 'ru-RU')
         if text:
             try:
                 bot.send_message(message.chat.id, text)

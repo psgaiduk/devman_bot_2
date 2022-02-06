@@ -1,18 +1,11 @@
-import os
+from constants import CHAT_ID_LOGGER, TOKEN_TELEGRAM_LOGGER
 import telebot
 import logging
-from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
 
 logger = logging.getLogger('app_logger')
 
-chat_id = os.environ['CHAT_ID']
-token_telegram_logger = os.environ['TOKEN_TELEGRAM_LOGGER']
-
-bot_logger = telebot.TeleBot(token=token_telegram_logger)
+bot_logger = telebot.TeleBot(token=TOKEN_TELEGRAM_LOGGER)
 
 
 class BotHandler(logging.Handler):
@@ -23,7 +16,7 @@ class BotHandler(logging.Handler):
         message = self.format(record)
         bot_logger.send_message(
             text=f'{message}',
-            chat_id=chat_id)
+            chat_id=CHAT_ID_LOGGER)
 
 
 logger_config = {

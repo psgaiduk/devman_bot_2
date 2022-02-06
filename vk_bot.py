@@ -9,13 +9,14 @@ import logging
 from logging import config
 import time
 from logger_settings import logger_config
+from constants import TOKEN_VK, PROJECT_ID
 
 logger = logging.getLogger('app_logger')
 
 
 def echo(event, vk_api):
     logger.debug(f'Готовимся отвечать пользователю')
-    text = detect_intent_texts('careful-gasket-340217', event.user_id, event.text, 'ru-RU')
+    text = detect_intent_texts(PROJECT_ID, event.user_id, event.text, 'ru-RU')
     logger.debug(f'Получили ответ от DialogFlow {text}')
 
     if text:
@@ -36,9 +37,7 @@ def main():
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
 
-    token_vk = os.environ['VK_TOKEN']
-
-    vk_session = vk.VkApi(token=token_vk)
+    vk_session = vk.VkApi(token=TOKEN_VK)
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
