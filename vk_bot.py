@@ -15,11 +15,12 @@ token_vk = os.environ['VK_TOKEN']
 def echo(event, vk_api):
     text = detect_intent_texts('careful-gasket-340217', event.user_id, event.text, 'ru-RU')
 
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=text,
-        random_id=random.randint(1, 1000)
-    )
+    if text:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=text,
+            random_id=random.randint(1, 1000)
+        )
 
 
 if __name__ == "__main__":

@@ -19,7 +19,8 @@ def repeat_all_messages(message):
         text = 'Здравствуйте'
     else:
         text = detect_intent_texts('careful-gasket-340217', message.chat.id, message.text, 'ru-RU')
-    bot.send_message(message.chat.id, text)
+    if text:
+        bot.send_message(message.chat.id, text)
 
 
 if __name__ == '__main__':
