@@ -12,7 +12,7 @@ from logger_settings import logger_config
 logger = logging.getLogger('app_logger')
 
 
-def echo(event, vk_api, project_id):
+def send_auto_answer_to_vk(event, vk_api, project_id):
     logger.debug(f'Готовимся отвечать пользователю')
     text = detect_intent_texts(project_id, event.user_id, event.text, 'ru-RU')
     logger.debug(f'Получили ответ от DialogFlow {text}')
@@ -42,7 +42,7 @@ def main():
         try:
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 logger.debug(f'Это новое сообщение {event.type} {event.to_me}')
-                echo(event, vk_api, project_id)
+                send_auto_answer_to_vk(event, vk_api, project_id)
         except Captcha:
             time.sleep(1)
             logger.warning('Ошибка. Слишком частые запросы.')
