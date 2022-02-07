@@ -8,36 +8,33 @@ import os
 logger = getLogger('app_logger')
 
 
-def main():
+token_telegram = os.environ['TELEGRAM_TOKEN']
+project_id = os.environ['PROJECT_ID']
 
-    token_telegram = os.environ['TELEGRAM_TOKEN']
-    project_id = os.environ['PROJECT_ID']
+config.dictConfig(logger_config)
 
-    config.dictConfig(logger_config)
+logger.info('Начало работы телеграмм бота Lerning Pashka 2')
 
-    logger.info('Начало работы телеграмм бота Lerning Pashka 2')
+bot = telebot.TeleBot(token=token_telegram)
 
-    bot = telebot.TeleBot(token=token_telegram)
 
-    @bot.message_handler(content_types=["text"])
-    def repeat_all_messages(message):
-        if message.text == '/start':
-            logger.debug('Это стартовое сообщение отвечает Здравствуйте')
-            text = 'Здравствуйте'
-        else:
-            logger.debug('Ищем ответ через DialogFlow')
-            text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
-        if text:
-            try:
-                bot.send_message(message.chat.id, text)
-                logger.debug(f'Отправляю сообщение {text}')
-            except Exception as e:
-                logger.exception(f'Произошла ошибка.\n{e}')
-        else:
-            logger.debug('DialogFlow не нашёл ответа, ничего не делаем')
-
-    bot.infinity_polling()
+@bot.message_handler(content_types=["text"])
+def repeat_all_messages(message):
+    if message.text == '/start':
+        logger.debug('Это стартовое сообщение отвечает Здравствуйте')
+        text = 'Здравствуйте'
+    else:
+        logger.debug('Ищем ответ через DialogFlow')
+        text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
+    if text:
+        try:
+            bot.send_message(message.chat.id, text)
+            logger.debug(f'Отправляю сообщение {text}')
+        except Exception as e:
+            logger.exception(f'Произошла ошибка.\n{e}')
+    else:
+        logger.debug('DialogFlow не нашёл ответа, ничего не делаем')
 
 
 if __name__ == '__main__':
-    main()
+    bot.infinity_polling()
