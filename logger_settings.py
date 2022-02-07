@@ -11,9 +11,6 @@ if os.path.exists(dotenv_path):
 CHAT_ID_LOGGER = os.environ['CHAT_ID']
 TOKEN_TELEGRAM_LOGGER = os.environ['TOKEN_TELEGRAM_LOGGER']
 
-
-logger = logging.getLogger('app_logger')
-
 bot_logger = telebot.TeleBot(token=TOKEN_TELEGRAM_LOGGER)
 
 
