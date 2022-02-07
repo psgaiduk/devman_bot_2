@@ -26,14 +26,13 @@ def repeat_all_messages(message):
     else:
         logger.debug('Ищем ответ через DialogFlow')
         text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
-    if text:
-        try:
-            bot.send_message(message.chat.id, text)
-            logger.debug(f'Отправляю сообщение {text}')
-        except Exception as e:
-            logger.exception(f'Произошла ошибка.\n{e}')
-    else:
-        logger.debug('DialogFlow не нашёл ответа, ничего не делаем')
+    if not text:
+        text = 'Простите, я не знаю ответа на этот вопрос.'
+    try:
+        bot.send_message(message.chat.id, text)
+        logger.debug(f'Отправляю сообщение {text}')
+    except Exception as e:
+        logger.exception(f'Произошла ошибка.\n{e}')
 
 
 if __name__ == '__main__':
