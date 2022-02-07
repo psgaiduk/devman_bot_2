@@ -38,13 +38,13 @@ logger_config = {
     'handlers': {
         'bot': {
             '()': BotHandler,
-            'level': 'DEBUG',
+            'level': 'INFO',
             'formatter': 'std_format'
         }
     },
     'loggers': {
         'app_logger': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'handlers': ['bot']
         }
     },

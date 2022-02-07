@@ -1,12 +1,11 @@
 import telebot
 from work_dialog_flow import detect_intent_texts
 from logger_settings import logger_config
-import logging
-from logging import config
+from logging import config, getLogger
 import os
 
 
-logger = logging.getLogger('app_logger')
+logger = getLogger('app_logger')
 
 
 def main():
@@ -14,7 +13,7 @@ def main():
     token_telegram = os.environ['TELEGRAM_TOKEN']
     project_id = os.environ['PROJECT_ID']
 
-    logging.config.dictConfig(logger_config)
+    config.dictConfig(logger_config)
 
     logger.info('Начало работы телеграмм бота Lerning Pashka 2')
 
