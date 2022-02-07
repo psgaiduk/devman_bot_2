@@ -1,6 +1,15 @@
-from constants import CHAT_ID_LOGGER, TOKEN_TELEGRAM_LOGGER
 import telebot
 import logging
+from dotenv import load_dotenv
+import os
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
+
+CHAT_ID_LOGGER = os.environ['CHAT_ID']
+TOKEN_TELEGRAM_LOGGER = os.environ['TOKEN_TELEGRAM_LOGGER']
 
 
 logger = logging.getLogger('app_logger')

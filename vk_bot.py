@@ -9,14 +9,13 @@ import logging
 from logging import config
 import time
 from logger_settings import logger_config
-from constants import TOKEN_VK, PROJECT_ID
 
 logger = logging.getLogger('app_logger')
 
 
-def echo(event, vk_api):
+def echo(event, vk_api, project_id):
     logger.debug(f'Готовимся отвечать пользователю')
-    text = detect_intent_texts(PROJECT_ID, event.user_id, event.text, 'ru-RU')
+    text = detect_intent_texts(project_id, event.user_id, event.text, 'ru-RU')
     logger.debug(f'Получили ответ от DialogFlow {text}')
 
     if text:
@@ -33,18 +32,22 @@ def echo(event, vk_api):
 def main():
     logging.config.dictConfig(logger_config)
     logger.info('Начало работы бота ВК Lerning Pashka 2')
+
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
 
-    vk_session = vk.VkApi(token=TOKEN_VK)
+    token_vk = os.environ['VK_TOKEN']
+    project_id = os.environ['PROJECT_ID']
+
+    vk_session = vk.VkApi(token=token_vk)
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         try:
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 logger.debug(f'Это новое сообщение {event.type} {event.to_me}')
-                echo(event, vk_api)
+                echo(event, vk_api, project_id)
         except Captcha:
             time.sleep(1)
             logger.warning('Ошибка. Слишком частые запросы.')

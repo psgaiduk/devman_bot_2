@@ -1,11 +1,11 @@
-from dotenv import load_dotenv
 import telebot
-import os
 from work_dialog_flow import detect_intent_texts
 from logger_settings import logger_config
 import logging
 from logging import config
-from constants import TOKEN_TELEGRAM, PROJECT_ID
+from dotenv import load_dotenv
+import os
+
 
 logger = logging.getLogger('app_logger')
 
@@ -15,11 +15,14 @@ def main():
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
 
+    token_telegram = os.environ['TELEGRAM_TOKEN']
+    project_id = os.environ['PROJECT_ID']
+
     logging.config.dictConfig(logger_config)
 
     logger.info('Начало работы телеграмм бота Lerning Pashka 2')
 
-    bot = telebot.TeleBot(token=TOKEN_TELEGRAM)
+    bot = telebot.TeleBot(token=token_telegram)
 
     @bot.message_handler(content_types=["text"])
     def repeat_all_messages(message):
@@ -28,7 +31,7 @@ def main():
             text = 'Здравствуйте'
         else:
             logger.debug('Ищем ответ через DialogFlow')
-            text = detect_intent_texts(PROJECT_ID, message.chat.id, message.text, 'ru-RU')
+            text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
         if text:
             try:
                 bot.send_message(message.chat.id, text)
