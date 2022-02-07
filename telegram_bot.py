@@ -32,7 +32,7 @@ def repeat_all_messages(message):
         bot.send_message(message.chat.id, text)
         logger.debug(f'Отправляю сообщение {text}')
     except Exception as e:
-        logger.exception(f'Произошла ошибка.\n{e}')
+        logger.error(e, exc_info=True)
 
 
 if __name__ == '__main__':

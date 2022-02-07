@@ -45,7 +45,7 @@ def main():
             logger.warning('Ошибка. Слишком частые запросы.')
         except Exception as e:
             time.sleep(1)
-            logger.exception(f'Произошла ошибка.\n{e}')
+            logger.error(e, exc_info=True)
 
 
 if __name__ == "__main__":
