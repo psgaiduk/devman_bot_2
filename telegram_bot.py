@@ -3,7 +3,6 @@ from work_dialog_flow import detect_intent_texts
 from logger_settings import logger_config
 import logging
 from logging import config
-from dotenv import load_dotenv
 import os
 
 
@@ -11,9 +10,6 @@ logger = logging.getLogger('app_logger')
 
 
 def main():
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
 
     token_telegram = os.environ['TELEGRAM_TOKEN']
     project_id = os.environ['PROJECT_ID']

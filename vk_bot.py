@@ -2,7 +2,6 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 import vk_api as vk
 from vk_api.exceptions import Captcha
 import random
-from dotenv import load_dotenv
 import os
 from work_dialog_flow import detect_intent_texts
 import logging
@@ -32,10 +31,6 @@ def echo(event, vk_api, project_id):
 def main():
     logging.config.dictConfig(logger_config)
     logger.info('Начало работы бота ВК Lerning Pashka 2')
-
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
 
     token_vk = os.environ['VK_TOKEN']
     project_id = os.environ['PROJECT_ID']
