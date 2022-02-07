@@ -4,11 +4,6 @@ import os
 from dotenv import load_dotenv
 
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
-
-
 def detect_intent_texts(project_id, session_id, texts, language_code):
     session_client = dialogflow.SessionsClient()
 
@@ -51,9 +46,14 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 
 
 if __name__ == '__main__':
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+    id_project = os.environ['PROJECT_ID']
+
     with open('questions.json', encoding='utf-8') as file_intents:
         intents = json.load(file_intents)
     for intent_name, training in intents.items():
         questions = training['questions']
         answer = training['answer']
-        create_intent('careful-gasket-340217', intent_name, questions, [answer])
+        create_intent(id_project, intent_name, questions, [answer])
