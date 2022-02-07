@@ -49,14 +49,11 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
         request={"parent": parent, "intent": intent}
     )
 
-    print("Intent created: {}".format(response))
-
 
 if __name__ == '__main__':
     with open('questions.json', encoding='utf-8') as file_intents:
         intents = json.load(file_intents)
     for intent_name, training in intents.items():
-        print(intent_name)
         questions = training['questions']
         answer = training['answer']
         create_intent('careful-gasket-340217', intent_name, questions, [answer])
