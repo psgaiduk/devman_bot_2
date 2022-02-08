@@ -4,10 +4,10 @@ import os
 from dotenv import load_dotenv
 
 
-def detect_intent_texts(project_id, session_id, texts, language_code):
+def detect_intent_texts(google_project_id, session_id, texts, language_code):
     session_client = dialogflow.SessionsClient()
 
-    session = session_client.session_path(project_id, session_id)
+    session = session_client.session_path(google_project_id, session_id)
 
     text_input = dialogflow.TextInput(text=texts, language_code=language_code)
 
@@ -23,10 +23,10 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
     return response.query_result.fulfillment_text
 
 
-def create_intent(project_id, display_name, training_phrases_parts, message_texts):
+def create_intent(google_project_id, display_name, training_phrases_parts, message_texts):
     intents_client = dialogflow.IntentsClient()
 
-    parent = dialogflow.AgentsClient.agent_path(project_id)
+    parent = dialogflow.AgentsClient.agent_path(google_project_id)
     training_phrases = []
     for training_phrases_part in training_phrases_parts:
         part = dialogflow.Intent.TrainingPhrase.Part(text=training_phrases_part)
@@ -49,11 +49,11 @@ if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
-    id_project = os.environ['PROJECT_ID']
+    project_id = os.environ['PROJECT_ID']
 
     with open('questions.json', encoding='utf-8') as file_intents:
         intents = json.load(file_intents)
     for intent_name, training in intents.items():
         questions = training['questions']
         answer = training['answer']
-        create_intent(id_project, intent_name, questions, [answer])
+        create_intent(project_id, intent_name, questions, [answer])
