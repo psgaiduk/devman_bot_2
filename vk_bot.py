@@ -22,7 +22,7 @@ def send_auto_answer_to_vk(event, vk_api, project_id):
         )
         return logger.debug('Отправили сообщение')
 
-    return logger.debug('Ответ не нашли, ничего не делаем')
+    logger.debug('Ответ не нашли, ничего не делаем')
 
 
 def main():
