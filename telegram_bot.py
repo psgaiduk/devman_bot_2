@@ -25,9 +25,7 @@ def repeat_all_messages(message):
         text = 'Здравствуйте'
     else:
         logger.debug('Ищем ответ через DialogFlow')
-        text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
-    if not text:
-        text = 'Простите, я не знаю ответа на этот вопрос.'
+        text = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU', 'telegram')
     try:
         bot.send_message(message.chat.id, text)
         logger.debug(f'Отправляю сообщение {text}')

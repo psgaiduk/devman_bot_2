@@ -11,7 +11,7 @@ logger = getLogger('app_logger')
 
 def send_auto_answer_to_vk(event, vk_api, project_id):
     logger.debug(f'Готовимся отвечать пользователю')
-    text = detect_intent_texts(project_id, event.user_id, event.text, 'ru-RU')
+    text = detect_intent_texts(project_id, event.user_id, event.text, 'ru-RU', 'vk')
     logger.debug(f'Получили ответ от DialogFlow {text}')
 
     if text:
