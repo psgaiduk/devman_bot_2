@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 
-def detect_intent_texts(google_project_id, session_id, texts, language_code, type_bot):
+def detect_intent_texts(google_project_id, session_id, texts, language_code):
     session_client = dialogflow.SessionsClient()
 
     session = session_client.session_path(google_project_id, session_id)
@@ -17,10 +17,7 @@ def detect_intent_texts(google_project_id, session_id, texts, language_code, typ
         request={"session": session, "query_input": query_input}
     )
 
-    if response.query_result.intent.is_fallback and type_bot == 'vk':
-        return ''
-
-    return response.query_result.fulfillment_text
+    return response.query_result.fulfillment_text, response.query_result.intent.is_fallback
 
 
 def create_intent(google_project_id, display_name, training_phrases_parts, message_texts):
