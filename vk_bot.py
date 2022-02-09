@@ -20,7 +20,8 @@ def send_auto_answer_to_vk(event, vk_api, project_id):
             message=text,
             random_id=random.randint(1, 1000)
         )
-        return logger.debug('Отправили сообщение')
+        logger.debug('Отправили сообщение')
+        return
 
     logger.debug('Ответ не нашли, ничего не делаем')
 
