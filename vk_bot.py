@@ -2,9 +2,10 @@ from vk_api import VkApi, longpoll, exceptions
 import random
 import os
 from work_dialog_flow import detect_intent_texts
-from logging import config, getLogger
+from logging import getLogger, basicConfig, INFO
 import time
-from logger_settings import logger_config
+from logger_settings import BotHandler
+from dotenv import load_dotenv
 
 logger = getLogger('app_logger')
 
@@ -27,7 +28,15 @@ def send_auto_answer_to_vk(event, vk_api, project_id):
 
 
 def main():
-    config.dictConfig(logger_config)
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+
+    logger_token = os.environ['TOKEN_TELEGRAM_LOGGER']
+    logger_chat_id = os.environ['CHAT_ID']
+
+    basicConfig(level=INFO, format='{asctime} - {levelname} - {name} - {message}', style='{')
+    logger.addHandler(BotHandler(logger_token, logger_chat_id))
     logger.info('Начало работы бота ВК Lerning Pashka 2')
 
     token_vk = os.environ['VK_TOKEN']

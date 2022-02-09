@@ -1,50 +1,17 @@
 import telebot
 import logging
-from dotenv import load_dotenv
-import os
 
 
 class BotHandler(logging.Handler):
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
 
-    CHAT_ID_LOGGER = os.environ['CHAT_ID']
-    TOKEN_TELEGRAM_LOGGER = os.environ['TOKEN_TELEGRAM_LOGGER']
-
-    bot_logger = telebot.TeleBot(token=TOKEN_TELEGRAM_LOGGER)
-
-    def __init__(self):
+    def __init__(self, logger_token, logger_chat_id):
         logging.Handler.__init__(self)
+        self.logger_token = logger_token
+        self.logger_chat_id = logger_chat_id
+        self.bot_logger = telebot.TeleBot(token=self.logger_token)
 
     def emit(self, record):
         message = self.format(record)
         self.bot_logger.send_message(
             text=f'{message}',
-            chat_id=self.CHAT_ID_LOGGER)
-
-
-logger_config = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    'formatters': {
-        'std_format': {
-            'format': '{asctime} - {levelname} - {name} - {message}',
-            'style': '{'
-        }
-    },
-    'handlers': {
-        'bot': {
-            '()': BotHandler,
-            'level': 'INFO',
-            'formatter': 'std_format'
-        }
-    },
-    'loggers': {
-        'app_logger': {
-            'level': 'INFO',
-            'handlers': ['bot']
-        }
-    },
-}
+            chat_id=self.logger_chat_id)

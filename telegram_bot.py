@@ -1,17 +1,23 @@
 import telebot
 from work_dialog_flow import detect_intent_texts
-from logger_settings import logger_config
-from logging import config, getLogger
+from logger_settings import BotHandler
+from logging import getLogger, basicConfig, INFO
 import os
+from dotenv import load_dotenv
 
 
 logger = getLogger('app_logger')
-
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 token_telegram = os.environ['TELEGRAM_TOKEN']
 project_id = os.environ['PROJECT_ID']
+logger_token = os.environ['TOKEN_TELEGRAM_LOGGER']
+logger_chat_id = os.environ['CHAT_ID']
 
-config.dictConfig(logger_config)
+basicConfig(level=INFO, format='{asctime} - {levelname} - {name} - {message}', style='{')
+logger.addHandler(BotHandler(logger_token, logger_chat_id))
 
 logger.info('Начало работы телеграмм бота Lerning Pashka 2')
 
