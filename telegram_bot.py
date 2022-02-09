@@ -25,7 +25,7 @@ def repeat_all_messages(message):
         text = 'Здравствуйте'
     else:
         logger.debug('Ищем ответ через DialogFlow')
-        text, is_fallback = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
+        text, _ = detect_intent_texts(project_id, message.chat.id, message.text, 'ru-RU')
     try:
         bot.send_message(message.chat.id, text)
         logger.debug(f'Отправляю сообщение {text}')
