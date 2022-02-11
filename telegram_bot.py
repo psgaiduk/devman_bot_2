@@ -7,25 +7,11 @@ from dotenv import load_dotenv
 
 
 logger = getLogger('app_logger')
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
-
-token_telegram = os.environ['TELEGRAM_TOKEN']
-project_id = os.environ['PROJECT_ID']
-logger_token = os.environ['TOKEN_TELEGRAM_LOGGER']
-logger_chat_id = os.environ['CHAT_ID']
-
-basicConfig(level=INFO, format='{asctime} - {levelname} - {name} - {message}', style='{')
-logger.addHandler(BotHandler(logger_token, logger_chat_id))
-
-logger.info('Начало работы телеграмм бота Lerning Pashka 2')
-
-bot = telebot.TeleBot(token=token_telegram)
 
 
-@bot.message_handler(content_types=["text"])
-def repeat_all_messages(message):
+def repeat_all_messages(message, bot):
+    project_id = bot.project_id
+
     if message.text == '/start':
         logger.debug('Это стартовое сообщение отвечает Здравствуйте')
         text = 'Здравствуйте'
@@ -39,5 +25,28 @@ def repeat_all_messages(message):
         logger.error(e, exc_info=True)
 
 
-if __name__ == '__main__':
+def main():
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+
+    token_telegram = os.environ['TELEGRAM_TOKEN']
+    project_id = os.environ['PROJECT_ID']
+    logger_token = os.environ['TOKEN_TELEGRAM_LOGGER']
+    logger_chat_id = os.environ['CHAT_ID']
+
+    basicConfig(level=INFO, format='{asctime} - {levelname} - {name} - {message}', style='{')
+    logger.addHandler(BotHandler(logger_token, logger_chat_id))
+
+    logger.info('Начало работы телеграмм бота Lerning Pashka 2')
+
+    bot = telebot.TeleBot(token=token_telegram)
+
+    bot.project_id = project_id
+    bot.register_message_handler(repeat_all_messages, content_types=['text'], pass_bot=True)
+
     bot.infinity_polling()
+
+
+if __name__ == '__main__':
+    main()
